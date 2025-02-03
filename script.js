@@ -68,3 +68,17 @@ const drawValue = () => {
 };
 
 
+// styling the button in the calculator
+const drawButton = (x, y, text, color, width = buttonWidth) => {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, width, buttonHeight);
+    ctx.strokeStyle = "#4b4f4e";
+    ctx.lineWidth = 0.5;
+    ctx.strokeRect(x, y, width, buttonHeight); // Use the custom width
+    ctx.fillStyle = "white";
+    ctx.font = "18px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, x + width / 2, y + buttonHeight / 2); // Adjust text position
+};
+
