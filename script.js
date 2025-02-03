@@ -142,3 +142,117 @@ const deleteValue = () => {
     }            
 };
 
+// evaluates the result
+const parseExpression = (expression) => {
+    prevExpression = expression;
+    // define allowed operators and their precedence
+    const operators = {
+        "+": 1,
+        "-": 1,
+        "*": 2,
+        "/": 2,
+        "%": 2
+    };
+
+    const isOperator = (char) => operators[char] !== undefined;
+
+    const outputQueue = [];
+    const operatorStack = [];
+
+    // tokenize the input expression
+    const tokens = expression
+        .replace(/\s+/g, "") // remove whitespace
+        .match(/(\d+(\.\d+)?)|([+\-*/%()])/g);
+
+    // parse each token
+    tokens.forEach((token) => {
+        if (!isNaN(token)) {
+            // token is a number
+            outputQueue.push(parseFloat(token));
+        } else if (isOperator(token)) {
+            // token is an operator
+            while (
+                operatorStack.length > 0 &&
+                isOperator(operatorStack[operatorStack.length - 1]) &&
+                operators[token] <= operators[operatorStack[operatorStack.length - 1]]
+            ) {
+                outputQueue.push(operatorStack.pop());
+            }
+            operatorStack.push(token);
+        } else if (token === "(") {
+            // token is left parenthesis
+            operatorStack.push(token);
+        } else if (token === ")") {
+            // token is right parenthesis
+            while (operatorStack[operatorStack.length - 1] !== "(") {
+                outputQueue.push(operatorStack.pop());
+                if (operatorStack.length === 0) {
+                    throw new Error("Invalid Expression: Mismatched Parentheses");
+                }
+            }
+            operatorStack.pop();
+        } else {
+            throw new Error("Invalid Expression");
+        }
+    });
+    // pop any remaining operators off the stack and push to output queue
+    while (operatorStack.length > 0) {
+        const operator = operatorStack.pop();
+        if (operator === "(") {
+            throw new Error("Invalid Expression: Mismatched Parentheses");
+        }
+        outputQueue.push(operator);
+    }
+
+    // evaluate the postfix expression
+    const stack = [];
+    outputQueue.forEach((token) => {
+        if (!isNaN(token)) {
+            // token is a number
+            stack.push(token);
+        } else if (isOperator(token)) {
+            // token is an operator
+            if (stack.length < 2) {
+                throw new Error("Invalid Expression");
+            }
+            const operand2 = stack.pop();
+            const operand1 = stack.pop();
+            let result;
+            switch (token) {
+                case "+":
+                    result = operand1 + operand2;
+                    break;
+                case "-":
+                    result = operand1 - operand2;
+                    break;
+                case "*":
+                    result = operand1 * operand2;
+                    break;
+                case "/":
+                    if (operand2 === 0) {
+                        if (operand1 === 0) {
+                            result = NaN; // 0/0 is undefined
+                        } else {
+                            result = Infinity; // n/0 is infinity
+                        }
+                    } else {
+                        result = operand1 / operand2;
+                    }
+                    break;
+                case "%":
+                    if (operand2 === 0) {
+                        throw new Error("Invalid Expression: Division by 0")
+                    }
+                    result = operand1 % operand2;
+                    break;
+            }
+            stack.push(result);
+        }
+    });
+
+    if (stack.length !== 1) {
+        throw new Error("Inv Expression");
+    }
+    return stack.pop();
+};
+
