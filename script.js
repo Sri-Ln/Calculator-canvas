@@ -82,3 +82,63 @@ const drawButton = (x, y, text, color, width = buttonWidth) => {
     ctx.fillText(text, x + width / 2, y + buttonHeight / 2); // Adjust text position
 };
 
+// this function draws the button on which the values are displayed such as numbers nad symbols
+const drawCalculator = () => {
+    drawValue();
+    drawButton(0, 150, "", "#5f6065");
+    drawButton(buttonWidth, 150, "", "#5f6065");
+    drawButton(buttonWidth * 2, 150, "AC", "#5f6065");
+    drawButton(buttonWidth * 3, 150, "%", "#5f6065");
+    drawButton(buttonWidth * 4, 150, "/", "orange");
+
+    drawButton(0, 150 + buttonHeight, "(", "#797a7e");
+    drawButton(buttonWidth, 150 + buttonHeight, "7", "#797a7e");
+    drawButton(buttonWidth * 2, 150 + buttonHeight, "8", "#797a7e");
+    drawButton(buttonWidth * 3, 150 + buttonHeight, "9", "#797a7e");
+    drawButton(buttonWidth * 4, 150 + buttonHeight, "x", "orange");
+
+    drawButton(0, 150 + buttonHeight * 2, ")", "#797a7e");
+    drawButton(buttonWidth, 150 + buttonHeight * 2, "4", "#797a7e");
+    drawButton(buttonWidth * 2, 150 + buttonHeight * 2, "5", "#797a7e");
+    drawButton(buttonWidth * 3, 150 + buttonHeight * 2, "6", "#797a7e");
+    drawButton(buttonWidth * 4, 150 + buttonHeight * 2, "-", "orange");
+
+    drawButton(0, 150 + buttonHeight * 3, "Back", "#797a7e");
+    drawButton(buttonWidth, 150 + buttonHeight * 3, "1", "#797a7e");
+    drawButton(buttonWidth * 2, 150 + buttonHeight * 3, "2", "#797a7e");
+    drawButton(buttonWidth * 3, 150 + buttonHeight * 3, "3", "#797a7e");
+    drawButton(buttonWidth * 4, 150 + buttonHeight * 3, "+", "orange");
+
+    // Make the "0" button span across two button widths
+    drawButton(0, 150 + buttonHeight * 4, "0", "#797a7e", buttonWidth * 3);
+    drawButton(buttonWidth * 3, 150 + buttonHeight * 4, ".", "#797a7e");
+    drawButton(buttonWidth * 4, 150 + buttonHeight * 4, "=", "orange");
+};
+
+// adds values side by side
+const addValue = (newValue) => {
+    value += newValue;
+    drawValue();
+}
+
+const clearAllValue = () => {
+    value = ""; // Clear the current value
+    prevExpression = ""; // Clear the previous expression
+    drawValue(); // Redraw the canvas
+}
+
+// clears value using back button
+const deleteValue = () => {
+    const lowerValue = value.toString().toLowerCase();
+    if (
+        lowerValue.includes("invalid expression") || 
+        lowerValue.includes("nan") || 
+        lowerValue.includes("infinity")
+    ) {
+        clearAllValue(); // Corrected function name to match convention
+    } else {
+        value = value.slice(0, -1);
+        drawValue();
+    }            
+};
+
