@@ -256,3 +256,17 @@ const parseExpression = (expression) => {
     return stack.pop();
 };
 
+// displays the output or error
+const evaluate = () => {
+    try {
+        let input = value;
+        prevExpression = value;
+        value = parseExpression(input).toString();
+    } catch (e) {
+        value = "Invalid Expression";
+    }
+    drawValue();
+};
+
+
+
