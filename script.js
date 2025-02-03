@@ -270,3 +270,87 @@ const evaluate = () => {
 
 
 
+// Event listener so that when we click on the numbers, it gets clicked and performs the required task
+canvas.addEventListener("mousedown", function (event) {
+    let rect = canvas.getBoundingClientRect();
+    let x = event.clientX - rect.left;
+    let y = event.clientY - rect.top;
+    if (y >= 150 && y <= 150 + buttonHeight) {
+        if (x >= 0 && x <= buttonWidth) {
+            //;
+        } else if (x >= buttonWidth && x <= buttonWidth * 2) {
+            //;
+        } else if (x >= buttonWidth * 2 && x <= buttonWidth * 3) {
+            // clears the value for the back button
+            clearAllValue();
+        } else if (x >= buttonWidth * 3 && x <= buttonWidth * 4) {
+            addValue(" % ");
+        } else if (x >= buttonWidth * 4 && x <= buttonWidth * 5) {
+            addValue(" / ");
+        }
+    } else if (y >= 150 + buttonHeight && y <= 150 + buttonHeight * 2) {
+        if (x >= 0 && x <= buttonWidth) {
+            addValue("(");
+        } else if (x >= buttonWidth && x <= buttonWidth * 2) {
+            addValue("7");
+        } else if (x >= buttonWidth * 2 && x <= buttonWidth * 3) {
+            addValue("8");
+        } else if (x >= buttonWidth * 3 && x <= buttonWidth * 4) {
+            addValue("9");
+        } else if (x >= buttonWidth * 4 && x <= buttonWidth * 5) {
+            addValue(" * ");
+        }
+    } else if (y >= 150 + buttonHeight * 2 && y <= 150 + buttonHeight * 3) {
+        if (x >= 0 && x <= buttonWidth) {
+            addValue(")");
+        } else if (x >= buttonWidth && x <= buttonWidth * 2) {
+            addValue("4");
+        } else if (x >= buttonWidth * 2 && x <= buttonWidth * 3) {
+            addValue("5");
+        } else if (x >= buttonWidth * 3 && x <= buttonWidth * 4) {
+            addValue("6");
+        } else if (x >= buttonWidth * 4 && x <= buttonWidth * 5) {
+            addValue(" - ");
+        }
+    } else if (y >= 150 + buttonHeight * 3 && y <= 150 + buttonHeight * 4) {
+        if (x >= 0 && x <= buttonWidth) {
+            deleteValue();
+        } else if (x >= buttonWidth && x <= buttonWidth * 2) {
+            addValue("1");
+        } else if (x >= buttonWidth * 2 && x <= buttonWidth * 3) {
+            addValue("2");
+        } else if (x >= buttonWidth * 3 && x <= buttonWidth * 4) {
+            addValue("3");
+        } else if (x >= buttonWidth * 4 && x <= buttonWidth * 5) {
+            addValue(" + ");
+        }
+    } else if (y >= 150 + buttonHeight * 4 && y <= 150 + buttonHeight * 5) {
+        if (x >= 0 && x <= buttonWidth * 3) {
+            addValue("0");
+        } else if (x >= buttonWidth * 2 && x <= buttonWidth * 3) {
+            //;
+        } else if (x >= buttonWidth * 3 && x <= buttonWidth * 4) {
+            addValue(".");
+        } else if (x >= buttonWidth * 4 && x <= buttonWidth * 5) {
+            evaluate();
+        }
+    }
+});
+
+// Keyboard event listener for calculator inputs
+document.addEventListener("keydown", (event) => {
+    const key = event.key;
+    if (!isNaN(key)) {
+        addValue(key); // Handle number keys
+    } else if (key === "+" || key === "-" || key === "*" || key === "/" || key === "%") {
+        addValue(` ${key} `); // Handle operators
+    } else if (key === "Enter") {
+        evaluate(); // Calculate on Enter key
+    } else if (key === "Backspace") {
+        deleteValue(); // Delete on Backspace
+    }  else if (key === "(" || key === ")") {
+        addValue(key); // Handle parentheses
+    }
+});
+
+drawCalculator();
