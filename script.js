@@ -30,3 +30,41 @@ canvas.addEventListener("mousemove", (event) => {
     drawValue(); // Redraw the canvas to check for hover state
 });
 
+// Function to check if the mouse is hovering over a circle
+const isHovering = (circle) => {
+    const distance = Math.sqrt(Math.pow(mouseX - circle.x, 2) + Math.pow(mouseY - 70, 2));
+    return distance < 10; // Radius of the circle is 10
+};
+
+// Function to draw circles with hover effect
+const drawCircles = () => {
+    circles.forEach(circle => {
+        ctx.beginPath();
+        ctx.arc(circle.x, 70, 10, 0, Math.PI * 2, false);
+        ctx.fillStyle = isHovering(circle) ? circle.hoverColor : circle.color; // Use hover color if hovering
+        ctx.fill();
+    });
+};
+
+// Input and output values display
+const drawValue = () => {
+    ctx.clearRect(0, 50, canvas.width, 100);
+
+    // Set the background color
+    ctx.fillStyle = "#4c5051"; // Background color
+    ctx.fillRect(0, 50, canvas.width, 100); // Fill background
+
+    // Set text properties
+    ctx.fillStyle = "white"; // Text color
+    ctx.textAlign = "right";
+
+    ctx.font = "15px Arial";
+    ctx.fillText(prevExpression, canvas.width - 10, 90);
+    ctx.font = "20px Arial";
+    ctx.fillText(value, canvas.width - 10, 125);
+
+    // Draw circles with hover effect
+    drawCircles();
+};
+
+
