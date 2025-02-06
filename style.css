@@ -14,3 +14,11 @@
 .calculatorParent{
     text-align: center;
 }
+body{
+    font-family: 'Stick No Bills', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 97vh;
+    background: linear-gradient(90deg, rgba(9, 8, 26, 1) 20%, rgba(8, 33, 77, 1) 50%, rgba(9, 8, 26, 1) 80%);
+};
